@@ -49,6 +49,7 @@ ls(char *path)
     break;
 
   case T_DIR:
+    // hl: length of "{path}/{dir_name}/"
     if(strlen(path) + 1 + DIRSIZ + 1 > sizeof buf){
       printf("ls: path too long\n");
       break;
@@ -56,9 +57,12 @@ ls(char *path)
     strcpy(buf, path);
     p = buf+strlen(buf);
     *p++ = '/';
+    // hl: read each file/sub-directory from the current dir
     while(read(fd, &de, sizeof(de)) == sizeof(de)){
       if(de.inum == 0)
         continue;
+      // hl: COPY file/directory name to the end of path
+      // hl: now buf contains full name
       memmove(p, de.name, DIRSIZ);
       p[DIRSIZ] = 0;
       if(stat(buf, &st) < 0){
