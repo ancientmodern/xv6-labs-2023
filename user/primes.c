@@ -19,11 +19,13 @@ void run(int base, int left[2]) {
           run(n, right);
           exit(0);
         }
+        close(right[0]);
       } else {
         write(right[1], &n, sizeof(n));
       }
     }
   }
+  close(left[0]);
   close(right[1]);
   wait(0);
 }
@@ -39,8 +41,8 @@ main(int argc, char *argv[])
     run(2, right);
   } else {
     // parent (left)
-    int i;
-    for(i = 3; i <= 35; ++i) {
+    close(right[0]);
+    for(int i = 3; i <= 35; ++i) {
       write(right[1], &i, sizeof(i));
     }
     close(right[1]);
